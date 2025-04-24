@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/menelai/material-table/compare/v1.0.0...v1.0.1) (2025-04-24)
+
+
+### Bug Fixes
+
+* subs ([b598792](https://github.com/menelai/material-table/commit/b598792d47dde623457eebf63d365636bd5070a3))
+
 # 1.0.0 (2025-04-24)
 
 
