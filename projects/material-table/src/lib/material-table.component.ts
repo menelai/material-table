@@ -3,7 +3,7 @@ import {ExtraColumnDirective} from './extra-column.directive';
 import {startWith, Subscription} from 'rxjs';
 
 @Directive()
-export class BaseTableComponent implements OnInit, AfterContentInit, OnDestroy {
+export class MaterialTableComponent implements OnInit, AfterContentInit, OnDestroy {
   @ContentChildren(ExtraColumnDirective) extra: QueryList<ExtraColumnDirective>;
 
   @Input() multiple = false;
