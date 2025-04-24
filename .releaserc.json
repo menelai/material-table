@@ -19,7 +19,7 @@
     [
       "@semantic-release/npm",
       {
-        "pkgRoot": "dist/snack-bar",
+        "pkgRoot": "dist/material-table",
         "tarballDir": "dist"
       }
     ],
