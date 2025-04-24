@@ -21,7 +21,7 @@ export class MaterialTableComponent implements OnInit, AfterContentInit, OnDestr
   }
 
   ngAfterContentInit(): void {
-    this.extra.changes.pipe(
+    this.subs = this.extra.changes.pipe(
       startWith(null),
     ).subscribe(() => {
       this.buildColumns();
@@ -29,7 +29,7 @@ export class MaterialTableComponent implements OnInit, AfterContentInit, OnDestr
   }
 
   ngOnDestroy(): void {
-    this.subs.unsubscribe();
+    this.subs?.unsubscribe();
   }
 
   protected buildColumns(): void {
