@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/menelai/material-table/compare/v1.0.1...v1.1.0) (2025-04-30)
+
+
+### Features
+
+* mass actions ([e6669b7](https://github.com/menelai/material-table/commit/e6669b7a36ed0cfbdc2662e9e7bd446755ad9a38))
+
 ## [1.0.1](https://github.com/menelai/material-table/compare/v1.0.0...v1.0.1) (2025-04-24)
 
 
