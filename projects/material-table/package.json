@@ -2,9 +2,10 @@
   "name": "@kovalenko/material-table",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": ">=16",
-    "@angular/core": ">=16",
-    "@angular/material": ">=16"
+    "@angular/common": ">=19",
+    "@angular/core": ">=19",
+    "@angular/material": ">=19",
+    "@angular/cdk": ">=19"
   },
   "dependencies": {
     "tslib": "^2.3.0"
