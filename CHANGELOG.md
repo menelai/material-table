@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/menelai/material-table/compare/v1.1.0...v1.1.1) (2025-04-30)
+
+
+### Bug Fixes
+
+* select column name ([458e3f0](https://github.com/menelai/material-table/commit/458e3f0a4cd2667f60a7f597dfb425c209ef94b1))
+
 # [1.1.0](https://github.com/menelai/material-table/compare/v1.0.1...v1.1.0) (2025-04-30)
 
 
