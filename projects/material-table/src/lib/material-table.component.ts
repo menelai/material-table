@@ -120,7 +120,7 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
   protected buildColumns(): void {
     this.extraColumns = this.extra?.toArray() ?? [];
     this.columns = [
-      ...this.multiple ? ['checkbox'] : [],
+      ...this.multiple ? ['select'] : [],
       ...this.basicColumns,
       ...this.extraColumns.map(d => d.mtExtraColumn),
     ];
