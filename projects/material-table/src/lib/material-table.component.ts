@@ -46,7 +46,7 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
     return numSelected === numRows && !this.isSelectedByFilter();
   });
 
-  readonly selected = output();
+  readonly selected = output<T | T[]>();
 
   readonly basicColumns: string[];
 
