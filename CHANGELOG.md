@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/menelai/material-table/compare/v1.1.1...v1.2.0) (2025-07-07)
+
+
+### Bug Fixes
+
+* include mat-paginator ([fc1cbd2](https://github.com/menelai/material-table/commit/fc1cbd29fc95321d0468e2745f2ed21fb29eedcf))
+
+
+### Features
+
+* signals ([b7379f7](https://github.com/menelai/material-table/commit/b7379f7a3eb49a8673f6d0a1b294388758cd1bbf))
+
 ## [1.1.1](https://github.com/menelai/material-table/compare/v1.1.0...v1.1.1) (2025-04-30)
 
 
