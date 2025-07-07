@@ -4,5 +4,5 @@ import {Directive, TemplateRef} from '@angular/core';
   selector: '[mtMassActions]',
 })
 export class MassActionsDirective {
-  constructor(public template: TemplateRef<any>) { }
+  constructor(public readonly template: TemplateRef<any>) { }
 }

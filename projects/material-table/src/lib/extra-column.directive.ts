@@ -1,12 +1,12 @@
-import {Directive, Input, TemplateRef} from '@angular/core';
+import {Directive, input, TemplateRef} from '@angular/core';
 
 @Directive({
   selector: '[mtExtraColumn]',
 })
 export class ExtraColumnDirective {
-  @Input() mtExtraColumn: string;
+  readonly mtExtraColumn = input.required<string>();
 
-  @Input() title = '';
+  readonly title = input('');
 
   constructor(public template: TemplateRef<any>) { }
 }

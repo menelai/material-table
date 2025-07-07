@@ -1,15 +1,16 @@
 import {
   AfterContentInit,
+  computed,
   ContentChild,
   ContentChildren,
   Directive,
-  EventEmitter,
   inject,
-  Input,
+  input,
   OnDestroy,
   OnInit,
-  Output,
-  QueryList
+  output,
+  QueryList,
+  signal
 } from '@angular/core';
 import {ExtraColumnDirective} from './extra-column.directive';
 import {startWith, Subscription} from 'rxjs';
@@ -24,25 +25,31 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
 
   @ContentChild(MassActionsDirective, {static: true}) massActions?: MassActionsDirective;
 
-  @Input() multiple = false;
+  readonly multiple = input(false);
 
-  @Input() selectable = false;
+  readonly selectable = input(false);
 
-  @Input() current: null | string | string[];
+  readonly current = input<null | string | string[]>();
 
-  @Output() readonly selected = new EventEmitter();
+  readonly extraColumns = signal<ExtraColumnDirective[]>([]);
+
+  readonly dataSource = signal<undefined | MatTableDataSource<T>>(undefined);
+
+  readonly isSelectedByFilter = signal(false);
+
+  readonly selection = signal(new SelectionModel<T>(true, []));
+
+  readonly isAllSelected = computed((): boolean => {
+    const numSelected = this.selection().selected.length;
+    const numRows = this.dataSource()?.data.length;
+    return numSelected === numRows && !this.isSelectedByFilter();
+  });
+
+  readonly selected = output();
 
   readonly basicColumns: string[];
 
-  readonly selection = new SelectionModel<T>(true, []);
-
-  dataSource?: MatTableDataSource<T>;
-
   columns: string[];
-
-  extraColumns: ExtraColumnDirective[] = [];
-
-  isSelectedByFilter = false;
 
   protected readonly bottomSheet = inject(MatBottomSheet);
 
@@ -68,61 +75,72 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
   }
 
   selectEverything(): void {
-    this.selection.clear();
-    this.dataSource?.data.forEach(row => this.selection.select(row));
-    this.isSelectedByFilter = true;
+    this.selection.update(v => {
+      v.clear();
+      this.dataSource()?.data.forEach(row => v.select(row));
+      return new SelectionModel(true, v.selected);
+    });
+    this.isSelectedByFilter.set(true);
     this.handleBottomSheet();
   }
 
   masterToggle(): void {
-    this.isSelectedByFilter = false;
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else {
-      this.selection.clear();
-      this.dataSource?.data!.forEach(row => this.selection.select(row));
-    }
+    this.isSelectedByFilter.set(false);
+
+    this.selection.update(v => {
+      if (this.isAllSelected()) {
+        v.clear();
+      } else {
+        v.clear();
+        this.dataSource()?.data!.forEach(row => v.select(row));
+      }
+
+      return new SelectionModel(true, v.selected);
+    });
+
     this.handleBottomSheet();
   }
 
   toggle(id: T): void {
-    this.selection.toggle(id);
+    this.selection.update(v => {
+      v.toggle(id);
+      return new SelectionModel(true, v.selected);
+    });
+
     this.handleBottomSheet();
-    this.isSelectedByFilter = false;
+    this.isSelectedByFilter.set(false);
   }
 
   clearSelection(): void {
-    this.selection.clear();
-    this.handleBottomSheet();
-    this.isSelectedByFilter = false;
-  }
+    this.selection.update(v => {
+      v.clear();
 
-  isAllSelected(): boolean {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource?.data.length;
-    return numSelected === numRows && !this.isSelectedByFilter;
+      return new SelectionModel(true, v.selected);
+    });
+    this.handleBottomSheet();
+    this.isSelectedByFilter.set(false);
   }
 
   handleBottomSheet(): void {
-    if (this.massActions?.template && !this.bs && !this.selection.isEmpty()) {
+    if (this.massActions?.template && !this.bs && !this.selection().isEmpty()) {
       this.bs = this.bottomSheet.open(this.massActions.template, {
         restoreFocus: true,
         autoFocus: false,
         hasBackdrop: false,
         disableClose: true,
       });
-    } else if (this.bs && this.selection.isEmpty()) {
+    } else if (this.bs && this.selection().isEmpty()) {
       this.bs.dismiss();
       delete this.bs;
     }
   }
 
   protected buildColumns(): void {
-    this.extraColumns = this.extra?.toArray() ?? [];
+    this.extraColumns.set(this.extra?.toArray() ?? []);
     this.columns = [
-      ...this.multiple ? ['select'] : [],
+      ...this.multiple() ? ['select'] : [],
       ...this.basicColumns,
-      ...this.extraColumns.map(d => d.mtExtraColumn),
+      ...this.extraColumns().map(d => d.mtExtraColumn()),
     ];
   }
 }
