@@ -17,7 +17,8 @@ import {startWith, Subscription} from 'rxjs';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import {MassActionsDirective} from './mass-actions.directive';
 import {SelectionModel} from '@angular/cdk/collections';
-import {MatTableDataSource} from '@angular/material/table';
+import type {MatTableDataSource} from '@angular/material/table';
+import type {MatPaginator} from '@angular/material/paginator';
 
 @Directive()
 export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit, OnDestroy {
@@ -33,7 +34,7 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
 
   readonly extraColumns = signal<ExtraColumnDirective[]>([]);
 
-  readonly dataSource = signal<undefined | MatTableDataSource<T>>(undefined);
+  readonly dataSource = signal<MatTableDataSource<T, MatPaginator> | undefined>(undefined);
 
   readonly isSelectedByFilter = signal(false);
 
