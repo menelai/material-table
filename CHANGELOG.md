@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/menelai/material-table/compare/v1.2.0...v1.2.1) (2025-07-07)
+
+
+### Bug Fixes
+
+* typed output ([eee238a](https://github.com/menelai/material-table/commit/eee238a3933f49252bcef3d900877d1756eb3471))
+
 # [1.2.0](https://github.com/menelai/material-table/compare/v1.1.1...v1.2.0) (2025-07-07)
 
 
