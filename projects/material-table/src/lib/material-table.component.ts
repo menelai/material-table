@@ -21,7 +21,7 @@ import {MassActionsDirective} from './mass-actions.directive';
 
 @Directive()
 export class MaterialTableComponent<T = any> implements OnDestroy {
-  readonly basicColumns: string[];
+  readonly basicColumns = signal<string[]>([]);
 
   readonly extraColumns = contentChildren(ExtraColumnDirective);
 
@@ -49,7 +49,7 @@ export class MaterialTableComponent<T = any> implements OnDestroy {
 
   readonly columns = computed(() => [
     ...this.multiple() ? ['select'] : [],
-    ...this.basicColumns,
+    ...this.basicColumns(),
     ...this.extraColumns().map(d => d.mtExtraColumn()),
   ]);
 
