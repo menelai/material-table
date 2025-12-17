@@ -1,38 +1,37 @@
+import {SelectionModel} from '@angular/cdk/collections';
 import {
-  AfterContentInit,
+  booleanAttribute,
   computed,
-  ContentChild,
-  ContentChildren,
+  contentChild,
+  contentChildren,
   Directive,
+  effect,
   inject,
   input,
   OnDestroy,
-  OnInit,
   output,
-  QueryList,
-  signal
+  signal,
 } from '@angular/core';
-import {ExtraColumnDirective} from './extra-column.directive';
-import {startWith, Subscription} from 'rxjs';
 import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
-import {MassActionsDirective} from './mass-actions.directive';
-import {SelectionModel} from '@angular/cdk/collections';
-import type {MatTableDataSource} from '@angular/material/table';
 import type {MatPaginator} from '@angular/material/paginator';
+import type {MatTableDataSource} from '@angular/material/table';
+
+import {ExtraColumnDirective} from './extra-column.directive';
+import {MassActionsDirective} from './mass-actions.directive';
 
 @Directive()
-export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit, OnDestroy {
-  @ContentChildren(ExtraColumnDirective) extra: QueryList<ExtraColumnDirective>;
+export class MaterialTableComponent<T = any> implements OnDestroy {
+  readonly basicColumns: string[];
 
-  @ContentChild(MassActionsDirective, {static: true}) massActions?: MassActionsDirective;
+  readonly extraColumns = contentChildren(ExtraColumnDirective);
 
-  readonly multiple = input(false);
+  readonly massActions = contentChild(MassActionsDirective);
 
-  readonly selectable = input(false);
+  readonly multiple = input(false, {transform: booleanAttribute});
+
+  readonly selectable = input(false, {transform: booleanAttribute});
 
   readonly current = input<null | string | string[]>();
-
-  readonly extraColumns = signal<ExtraColumnDirective[]>([]);
 
   readonly dataSource = signal<MatTableDataSource<T, MatPaginator> | undefined>(undefined);
 
@@ -40,7 +39,7 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
 
   readonly selection = signal(new SelectionModel<T>(true, []));
 
-  readonly isAllSelected = computed((): boolean => {
+  readonly isAllSelected = computed(() => {
     const numSelected = this.selection().selected.length;
     const numRows = this.dataSource()?.data.length;
     return numSelected === numRows && !this.isSelectedByFilter();
@@ -48,30 +47,21 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
 
   readonly selected = output<T | T[]>();
 
-  readonly basicColumns: string[];
-
-  columns: string[];
+  readonly columns = computed(() => [
+    ...this.multiple() ? ['select'] : [],
+    ...this.basicColumns,
+    ...this.extraColumns().map(d => d.mtExtraColumn()),
+  ]);
 
   protected readonly bottomSheet = inject(MatBottomSheet);
 
   protected bs?: MatBottomSheetRef<unknown, any>;
 
-  private subs: Subscription;
-
-  ngOnInit(): void {
-    this.buildColumns();
-  }
-
-  ngAfterContentInit(): void {
-    this.subs = this.extra.changes.pipe(
-      startWith(null),
-    ).subscribe(() => {
-      this.buildColumns();
-    });
+  constructor() {
+    effect(() => this.handleBottomSheet);
   }
 
   ngOnDestroy(): void {
-    this.subs?.unsubscribe();
     this.bs?.dismiss();
   }
 
@@ -82,7 +72,6 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
       return new SelectionModel(true, v.selected);
     });
     this.isSelectedByFilter.set(true);
-    this.handleBottomSheet();
   }
 
   masterToggle(): void {
@@ -98,8 +87,6 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
 
       return new SelectionModel(true, v.selected);
     });
-
-    this.handleBottomSheet();
   }
 
   toggle(id: T): void {
@@ -108,7 +95,6 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
       return new SelectionModel(true, v.selected);
     });
 
-    this.handleBottomSheet();
     this.isSelectedByFilter.set(false);
   }
 
@@ -118,13 +104,13 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
 
       return new SelectionModel(true, v.selected);
     });
-    this.handleBottomSheet();
+
     this.isSelectedByFilter.set(false);
   }
 
-  handleBottomSheet(): void {
-    if (this.massActions?.template && !this.bs && !this.selection().isEmpty()) {
-      this.bs = this.bottomSheet.open(this.massActions.template, {
+  readonly handleBottomSheet = (): void => {
+    if (this.massActions()?.template && !this.bs && !this.selection().isEmpty()) {
+      this.bs = this.bottomSheet.open(this.massActions()!.template, {
         restoreFocus: true,
         autoFocus: false,
         hasBackdrop: false,
@@ -134,14 +120,5 @@ export class MaterialTableComponent<T = any> implements OnInit, AfterContentInit
       this.bs.dismiss();
       delete this.bs;
     }
-  }
-
-  protected buildColumns(): void {
-    this.extraColumns.set(this.extra?.toArray() ?? []);
-    this.columns = [
-      ...this.multiple() ? ['select'] : [],
-      ...this.basicColumns,
-      ...this.extraColumns().map(d => d.mtExtraColumn()),
-    ];
-  }
+  };
 }
