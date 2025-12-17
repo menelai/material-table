@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/menelai/material-table/compare/v1.3.0...v1.3.1) (2025-12-17)
+
+
+### Bug Fixes
+
+* basic columns via signal ([ba48050](https://github.com/menelai/material-table/commit/ba4805078426a39d2fd6e50da6cc24f3f5a48a18))
+
 # [1.3.0](https://github.com/menelai/material-table/compare/v1.2.1...v1.3.0) (2025-12-17)
 
 
