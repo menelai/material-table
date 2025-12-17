@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/menelai/material-table/compare/v1.2.1...v1.3.0) (2025-12-17)
+
+
+### Features
+
+* signal columns ([405cfc3](https://github.com/menelai/material-table/commit/405cfc3e36722e91fe76e3724d063b8b08c9981d))
+
 ## [1.2.1](https://github.com/menelai/material-table/compare/v1.2.0...v1.2.1) (2025-07-07)
 
 
