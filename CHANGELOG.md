@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/menelai/material-table/compare/v1.3.1...v1.3.2) (2025-12-22)
+
+
+### Bug Fixes
+
+* effect ([2120e5b](https://github.com/menelai/material-table/commit/2120e5b0643f940e3a4d032f762695437e9d7f63))
+
 ## [1.3.1](https://github.com/menelai/material-table/compare/v1.3.0...v1.3.1) (2025-12-17)
 
 
