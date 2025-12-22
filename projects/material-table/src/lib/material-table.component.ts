@@ -58,7 +58,7 @@ export class MaterialTableComponent<T = any> implements OnDestroy {
   protected bs?: MatBottomSheetRef<unknown, any>;
 
   constructor() {
-    effect(() => this.handleBottomSheet);
+    effect(this.handleBottomSheet);
   }
 
   ngOnDestroy(): void {
