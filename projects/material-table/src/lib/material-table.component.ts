@@ -20,7 +20,7 @@ import {ExtraColumnDirective} from './extra-column.directive';
 import {MassActionsDirective} from './mass-actions.directive';
 
 @Directive()
-export class MaterialTableComponent<T = any> implements OnDestroy {
+export class MaterialTableComponent<T = any, R = T> implements OnDestroy {
   readonly basicColumns = signal<string[]>([]);
 
   readonly extraColumns = contentChildren(ExtraColumnDirective);
@@ -37,7 +37,7 @@ export class MaterialTableComponent<T = any> implements OnDestroy {
 
   readonly isSelectedByFilter = signal(false);
 
-  readonly selection = signal(new SelectionModel<T>(true, []));
+  readonly selection = signal(new SelectionModel<R>(true, []));
 
   readonly isAllSelected = computed(() => {
     const numSelected = this.selection().selected.length;
@@ -45,7 +45,7 @@ export class MaterialTableComponent<T = any> implements OnDestroy {
     return numSelected === numRows && !this.isSelectedByFilter();
   });
 
-  readonly selected = output<T | T[]>();
+  readonly selected = output<R | R[]>();
 
   readonly columns = computed(() => [
     ...this.multiple() ? ['select'] : [],
@@ -89,7 +89,7 @@ export class MaterialTableComponent<T = any> implements OnDestroy {
     });
   }
 
-  toggle(id: T): void {
+  toggle(id: R): void {
     this.selection.update(v => {
       v.toggle(id);
       return new SelectionModel(true, v.selected);
