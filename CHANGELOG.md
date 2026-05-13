@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/menelai/material-table/compare/v1.3.2...v1.4.0) (2026-05-13)
+
+
+### Bug Fixes
+
+* types ([28c69a3](https://github.com/menelai/material-table/commit/28c69a300ade6f6c43c1a29452040d78d53abaf1))
+
+
+### Features
+
+* generic for selection ([3de255c](https://github.com/menelai/material-table/commit/3de255c3a3cddc230740a750b57dfc63863f50ad))
+
 ## [1.3.2](https://github.com/menelai/material-table/compare/v1.3.1...v1.3.2) (2025-12-22)
 
 
