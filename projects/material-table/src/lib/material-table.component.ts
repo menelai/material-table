@@ -68,7 +68,7 @@ export class MaterialTableComponent<T = any, R = T> implements OnDestroy {
   selectEverything(): void {
     this.selection.update(v => {
       v.clear();
-      this.dataSource()?.data.forEach(row => v.select(row));
+      this.dataSource()?.data.forEach(row => v.select(this.transformItem(row)));
       return new SelectionModel(true, v.selected);
     });
     this.isSelectedByFilter.set(true);
@@ -82,7 +82,7 @@ export class MaterialTableComponent<T = any, R = T> implements OnDestroy {
         v.clear();
       } else {
         v.clear();
-        this.dataSource()?.data!.forEach(row => v.select(row));
+        this.dataSource()?.data!.forEach(row => v.select(this.transformItem(row)));
       }
 
       return new SelectionModel(true, v.selected);
@@ -106,6 +106,10 @@ export class MaterialTableComponent<T = any, R = T> implements OnDestroy {
     });
 
     this.isSelectedByFilter.set(false);
+  }
+
+  transformItem(item: T): R {
+    return item as unknown as R;
   }
 
   readonly handleBottomSheet = (): void => {
