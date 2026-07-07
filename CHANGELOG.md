@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/menelai/material-table/compare/v1.4.0...v1.5.0) (2026-07-07)
+
+
+### Features
+
+* TemplateRef for title ([fcc931d](https://github.com/menelai/material-table/commit/fcc931d753ff8ab948b67fc74cf2d01d97ab91da))
+
 # [1.4.0](https://github.com/menelai/material-table/compare/v1.3.2...v1.4.0) (2026-05-13)
 
 
