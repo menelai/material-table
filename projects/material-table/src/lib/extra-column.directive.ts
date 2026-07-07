@@ -6,7 +6,7 @@ import {Directive, input, TemplateRef} from '@angular/core';
 export class ExtraColumnDirective {
   readonly mtExtraColumn = input.required<string>();
 
-  readonly title = input('');
+  readonly title = input<string | TemplateRef<any>>('');
 
   constructor(public template: TemplateRef<any>) { }
 }
